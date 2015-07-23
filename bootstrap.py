@@ -154,9 +154,10 @@ def get_dns_ip():
     dns_ip = get_next_ip_in_range(args.dns_range, str(addr))
     # Set the new value in etcd before returning
     new = requests.put(args.etcd+"/v2/keys"+args.etcd_key, data={ 'value' : dns_ip})
-    # Validate HTTP status code, prevNode, and current node for success
-    if new.status_code != 200 or new.json()['node']['value'] != dns_ip or new.json()['prevNode']['value'] != str(addr):
-        logger.error("Could not set new lastaddr!")
+    # Validate current node for success
+    if new.json()['node']['value'] != dns_ip:
+        logger.info(new.json()['node']['value'] + " | " + str(new.status_code))
+        logger.error("Failed to set new lastaddr!")
     return dns_ip
 
 def get_next_ip_in_range(subnet, addr):
