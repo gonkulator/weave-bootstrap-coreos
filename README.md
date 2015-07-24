@@ -10,3 +10,5 @@ Since this script is written in Python and CoreOS doesn't have Python, the inclu
 docker build -t bootstrap .
 docker run --rm -v /opt/bin:/install bootstrap
 ```
+
+**NOTE: This script only works on Etcd currently, not Etcd2**
